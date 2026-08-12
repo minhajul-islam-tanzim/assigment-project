@@ -24,7 +24,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-[linear-gradient(135deg,_#f5f7fa_0%,_#c3cfe2_100%)] max-h-screen">
         <Navbar />
 
         {children}
