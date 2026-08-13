@@ -1,10 +1,10 @@
 
-const page = () => {
+const BookDetaildPage = () => {
   return (
     <div>
-      hii
+      
     </div>
   )
 }
 
-export default page
+export default BookDetaildPage
