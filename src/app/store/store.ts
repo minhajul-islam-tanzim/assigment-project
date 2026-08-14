@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import allBooks from "../store/features/bookSlice"
+import allBooks from "./features/bookSlice"
 
 
 export const store = configureStore({

@@ -1,11 +1,13 @@
-import booksData from "@/data/data.json"
-import { Book } from "@/types/book"
-import BookCard from "../BookCard"
-import Link from "next/link"
+'use client'
 
+
+import BookCard from "../shared/BookCard"
+import Link from "next/link"
+import { RootState } from "@/app/store/store"   
+import { useSelector } from "react-redux"
 
 const BooksData = () => {
-        const books = booksData as Book[]
+        const {books} = useSelector((state: RootState) => state.Books)
         const feature = books.slice(0, 4)
 
   return (
