@@ -43,9 +43,7 @@ const BookDetaildPage = () => {
             {book.available_quantity} copies left
           </p>
 
-          {/* <button className="btn btn-primary w-fit mt-4">
-            Borrow This Book
-          </button> */}
+          
         </div>
 
       </div>

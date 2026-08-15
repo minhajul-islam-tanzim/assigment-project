@@ -4,13 +4,9 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/app/store/store";
 import { fetchBook } from "@/app/store/features/bookSlice";
-import Link from "next/link";
+import BookCard from "@/components/shared/BookCard";
 
 const categories = ["All", "Story", "Tech", "Science"];
-
-
-
-
 
 
 const Allpage = () => {
@@ -38,7 +34,8 @@ const Allpage = () => {
   }
 
 
-    const matchCategory = books.filter((book) => {
+    const filterBooks = books.filter((book) => {
+
           const matchCategory = selectedCategory === "All" || book.category === selectedCategory;
 
           const matchSearch = book.title.toLocaleLowerCase().includes(searchQuery.toLowerCase())
@@ -79,10 +76,15 @@ const Allpage = () => {
       </div>
       
 
-            <div className="text-center text-gray-500 mb-6">
-
-
-            </div>
+     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+  {filterBooks.length === 0 ? (
+    <p className="col-span-full text-center text-gray-500">
+        There is no books Available
+    </p>
+  ) : (
+    filterBooks.map((book) => <BookCard key={book.id} book={book} />)
+  )}
+</div>
 
 
 
