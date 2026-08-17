@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -12,11 +13,39 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
+
     e.preventDefault();
+
+    setLoading(true)
+
+   const { data, error } = await authClient.signIn.email({
+    email,
+    password,
+    callbackURL: "/profile",
+    rememberMe: false,
+  });
+
+    if(error){
+      setLoading(false)
+      setError(error.message || "something went worng")
+      return
+    }
+
+    
+    
+  setLoading(false);
+  setEmail("");
+  setPassword("");
+
+router.push("/profile");
+
+console.log(data)
   };
 
+
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center  px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8">
         <h1 className="text-2xl font-semibold text-gray-800 mb-1">
           Welcome back

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client"; 
 
 
 export default function RegisterPage() {
@@ -12,15 +13,41 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
 
-    
-    
+    const resetForm = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setError("");
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault()
+  setError("");
+  setLoading(true)
+
+  await authClient.signUp.email(
+    {
+      email,
+      password,
+      name,
+    },
+
+    {
+      onRequest: () => {
+        setLoading(true);
+      },
+      onSuccess: () => {
+        resetForm()
+        router.push("/profile");
+      },
+      onError: (ctx) => {
+        setError(ctx.error.message || "Try again");
+        setLoading(false);
+      },
+    }
+  );
+};
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-md p-8">
