@@ -32,10 +32,13 @@ const Navbar = () => {
         </div>
 
         {/* Right side */}
+
         <div className="flex items-center gap-3">
+        <Link href={'login'}>
           <button className="btn btn-primary hidden md:inline-flex">
             Login
           </button>
+         </Link>
 
           {/* 3-dot menu - শুধু mobile এ */}
           <div className="dropdown dropdown-end md:hidden">

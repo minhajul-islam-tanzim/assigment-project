@@ -1,10 +1,10 @@
 
-const ProfilePage = () => {
+const page = () => {
   return (
-    <div>
-      
+    <div className="mt-22">
+      Hello
     </div>
   )
 }
 
-export default ProfilePage
+export default page
