@@ -5,24 +5,33 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/app/store/store";
 import { fetchBook } from "@/app/store/features/bookSlice";
 import BookCard from "@/components/shared/BookCard";
+import { useSearchParams } from "next/navigation";
+
 
 const categories = ["All", "Story", "Tech", "Science"];
 
 
 const Allpage = () => {
     const dispatch = useDispatch<AppDispatch>();
-  
+    const searchParams = useSearchParams(); 
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
   const { books, loading, error } = useSelector((state: RootState) => state.Books);
 
+
+
+  
   useEffect(() => {
     if (books.length === 0) {
       dispatch(fetchBook());
     }
   }, [dispatch, books.length]);
 
+ useEffect(() => {
+  const setUrl = searchParams.get("categories") || "All" 
+      setSelectedCategory(setUrl)
+}, [searchParams]);
   
   if (loading) {
     return <div className="text-center py-20 text-2xl">Loading...</div>;
@@ -34,7 +43,7 @@ const Allpage = () => {
   }
 
 
-    const filterBooks = books.filter((book) => {
+           const filterBooks = books.filter((book) => {
 
           const matchCategory = selectedCategory === "All" || book.category === selectedCategory;
 

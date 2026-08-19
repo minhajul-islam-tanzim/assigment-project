@@ -1,8 +1,10 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import NavLinks from "./NavLinks";
 import { TextAlignJustify } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const links = [
   { url: "/", title: "Home" },
@@ -11,10 +13,19 @@ const links = [
 ];
 
 const Navbar = () => {
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
+
+  const handleLogout = async () => {
+    await authClient.signOut();
+    router.push("/login");
+    router.refresh();
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 backdrop-blur-sm z-50 border-gray-400 shadow-sm bg-sky-50">
       <div className="w-full max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 md:px-16 h-13 md:h-20">
-        
+
         {/* Logo */}
         <div className="flex relative cursor-pointer left-5">
           <Link href={"/"}>
@@ -32,13 +43,25 @@ const Navbar = () => {
         </div>
 
         {/* Right side */}
-
         <div className="flex items-center gap-3">
-        <Link href={'login'}>
-          <button className="btn btn-primary hidden md:inline-flex">
-            Login
-          </button>
-         </Link>
+          {isPending ? (
+            <div className="hidden md:block w-20 h-9"></div>
+          ) : session ? (
+            <div className="hidden md:flex items-center gap-3 bg-blue-200 px-3 py-1 rounded-2xl">
+              <span className="font-medium text-gray-700">
+                {session.user.name}
+              </span>
+              <button onClick={handleLogout} className="bg-red-400 text-white px-2 py-1 rounded-2xl hover:bg-orange-500 cursor-pointer">
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link href={"/login"}>
+              <button className="btn btn-primary hidden md:inline-flex">
+                Login
+              </button>
+            </Link>
+          )}
 
           {/* 3-dot menu - শুধু mobile এ */}
           <div className="dropdown dropdown-end md:hidden">
@@ -54,11 +77,25 @@ const Navbar = () => {
                   <Link href={link.url}>{link.title}</Link>
                 </li>
               ))}
-              <li>
-                <Link href="/login" className="btn btn-primary mt-1">
-                  Login
-                </Link>
-              </li>
+
+              {session ? (
+                <>
+                  <li className="text-center font-medium py-1">
+                    {session.user.name}
+                  </li>
+                  <li>
+                    <button onClick={handleLogout} className="btn btn-error mt-1">
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <Link href="/login" className="btn btn-primary mt-1">
+                    Login
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>
