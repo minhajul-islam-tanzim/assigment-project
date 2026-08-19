@@ -10,6 +10,7 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
   
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -45,7 +46,7 @@ export default function RegisterPage() {
         });
         
         const data = await res.json();
-        console.log("Upload response:", data); // ✅ ব্রাউজারে দেখুন
+        console.log("Upload response:", data); 
         
         if (!res.ok) throw new Error(data.error);
         imageUrl = data.url;
@@ -61,16 +62,18 @@ export default function RegisterPage() {
         {
           onSuccess: () => {
             router.push("/profile");
+              router.refresh();
+
           },
           onError: (ctx) => {
-            console.log("Register error:", ctx); // ✅ ব্রাউজারে দেখুন
+            console.log("Register error:", ctx);
             setError(ctx.error.message || "Registration failed");
             setLoading(false);
           },
         }
       );
     } catch (err: any) {
-      console.log("Catch error:", err); // ✅ ব্রাউজারে দেখুন
+      console.log("Catch error:", err); 
       setError(err.message || "Something went wrong");
       setLoading(false);
     }
@@ -84,24 +87,42 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Image */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Profile Image</label>
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                {preview ? (
-                  <img src={preview} alt="Preview" className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-xl">📷</span>
-                )}
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImage}
-                className="text-sm"
-              />
-            </div>
-          </div>
+
+          
+         {/* Image */}
+<div>
+  <label className="block text-sm font-medium mb-1">Profile Image</label>
+  <label
+    htmlFor="profileImage"
+    className="flex items-center gap-3 bg-gray-50 p-3 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-100 hover:border-gray-300 transition"
+  >
+    <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden ring-2 ring-white shadow-sm">
+      {preview ? (
+        <img src={preview} alt="Preview" className="w-full h-full object-cover" />
+      ) : (
+        <span className="text-xl">📷</span>
+      )}
+    </div>
+
+    <div className="flex flex-col">
+      <span className="text-sm font-medium text-gray-700">
+        {preview ? "Change photo" : "Upload photo"}
+      </span>
+      <span className="text-xs text-gray-400">
+        {form.image ? form.image.name : "PNG, JPG up to 5MB"}
+      </span>
+    </div>
+
+    <input
+      id="profileImage"
+      type="file"
+      accept="image/*"
+      onChange={handleImage}
+      className="hidden"
+    />
+  </label>
+</div>
+
 
           {/* Name */}
           <div>

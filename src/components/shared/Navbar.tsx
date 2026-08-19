@@ -5,6 +5,7 @@ import Link from "next/link";
 import NavLinks from "./NavLinks";
 import { TextAlignJustify } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const links = [
   { url: "/", title: "Home" },
@@ -15,6 +16,8 @@ const links = [
 const Navbar = () => {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
+
+  console.log("Full session:", session);
 
   const handleLogout = async () => {
     await authClient.signOut();
@@ -48,9 +51,22 @@ const Navbar = () => {
             <div className="hidden md:block w-20 h-9"></div>
           ) : session ? (
             <div className="hidden md:flex items-center gap-3 bg-blue-200 px-3 py-1 rounded-2xl">
-              <span className="font-medium text-gray-700">
-                {session.user.name}
-              </span>
+                 
+                 {session.user.image ? (
+        <img
+          src={session.user.image}
+          alt={session.user.name}
+          className="w-10 h-10 rounded-full object-cover"
+        />
+      ) : (
+        <span className="text-sm font-semibold text-gray-600">
+          {session.user.name?.charAt(0).toUpperCase()}
+        </span>
+      )}
+          <span className="font-medium text-gray-700">
+        {session.user.name}
+      </span>
+
               <button onClick={handleLogout} className="bg-red-400 text-white px-2 py-1 rounded-2xl hover:bg-orange-500 cursor-pointer">
                 Logout
               </button>
@@ -63,7 +79,7 @@ const Navbar = () => {
             </Link>
           )}
 
-          {/* 3-dot menu - শুধু mobile এ */}
+          {/* 3-dot menu */}
           <div className="dropdown dropdown-end md:hidden">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
               <TextAlignJustify size={20} />
