@@ -15,7 +15,7 @@ const initialState: BooksState = {
 };
 
 export const fetchBook = createAsyncThunk('fetchBook', async () => {
-  const response = await axios.get("http://localhost:3000/api/books")
+  const response = await axios.get("https://assigment-project-phi.vercel.app/api/books")
   return response.data as Book[]
 })
 
