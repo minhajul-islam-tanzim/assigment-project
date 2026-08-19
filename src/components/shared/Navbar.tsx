@@ -5,7 +5,7 @@ import Link from "next/link";
 import NavLinks from "./NavLinks";
 import { TextAlignJustify } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { motion } from "framer-motion";
 
 const links = [
   { url: "/", title: "Home" },
@@ -16,8 +16,6 @@ const links = [
 const Navbar = () => {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
-
-  console.log("Full session:", session);
 
   const handleLogout = async () => {
     await authClient.signOut();
@@ -30,42 +28,59 @@ const Navbar = () => {
       <div className="w-full max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 md:px-16 h-13 md:h-20">
 
         {/* Logo */}
-        <div className="flex relative cursor-pointer left-5">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0 }}
+          className="flex relative cursor-pointer left-5"
+        >
           <Link href={"/"}>
             <div className="bg-pink-400 h-5 w-5 rounded-full absolute right-4"></div>
             <div className="bg-green-700 h-5 w-5 rounded-full absolute right-8"></div>
             <div className="bg-gray-600 h-5 w-5 rounded-full"></div>
           </Link>
-        </div>
+        </motion.div>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-10">
-          {links.map((link) => (
-            <NavLinks key={link.url} link={link} />
+          {links.map((link, index) => (
+            <motion.div
+              key={link.url}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.15 + index * 0.1 }}
+            >
+              <NavLinks link={link} />
+            </motion.div>
           ))}
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-3">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.15 + links.length * 0.1 }}
+          className="flex items-center gap-3"
+        >
           {isPending ? (
             <div className="hidden md:block w-20 h-9"></div>
           ) : session ? (
             <div className="hidden md:flex items-center gap-3 bg-blue-200 px-3 py-1 rounded-2xl">
-                 
-                 {session.user.image ? (
-        <img
-          src={session.user.image}
-          alt={session.user.name}
-          className="w-10 h-10 rounded-full object-cover"
-        />
-      ) : (
-        <span className="text-sm font-semibold text-gray-600">
-          {session.user.name?.charAt(0).toUpperCase()}
-        </span>
-      )}
-          <span className="font-medium text-gray-700">
-        {session.user.name}
-      </span>
+
+              {session.user.image ? (
+                <img
+                  src={session.user.image}
+                  alt={session.user.name}
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+              ) : (
+                <span className="text-sm font-semibold text-gray-600">
+                  {session.user.name?.charAt(0).toUpperCase()}
+                </span>
+              )}
+              <span className="font-medium text-gray-700">
+                {session.user.name}
+              </span>
 
               <button onClick={handleLogout} className="bg-red-400 text-white px-2 py-1 rounded-2xl hover:bg-orange-500 cursor-pointer">
                 Logout
@@ -114,7 +129,7 @@ const Navbar = () => {
               )}
             </ul>
           </div>
-        </div>
+        </motion.div>
 
       </div>
     </nav>

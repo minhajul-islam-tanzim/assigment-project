@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
-
+import { motion } from "framer-motion";
 
 type Category = {
   id: number;
@@ -48,30 +48,53 @@ export default function CategorySection() {
   return (
     <section className="relative py-20 px-6">
       {/* Top badge */}
-      <div className="flex justify-center mb-6">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false }}
+        transition={{ duration: 0.5 }}
+        className="flex justify-center mb-6"
+      >
         <span className="text-xs font-semibold tracking-wide text-emerald-700 bg-emerald-50 border border-emerald-200 px-4 py-1.5 rounded-full">
           CATEGORIES
         </span>
-      </div>
+      </motion.div>
 
       {/* Heading */}
-      <h2 className="text-center text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">
+      <motion.h2
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 3, y: 0 }}
+        viewport={{ once: false }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="text-center text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4"
+      >
         Browse by <span className="text-orange-500">Category</span>
-      </h2>
+      </motion.h2>
 
       {/* Subtext */}
-      <p className="text-center text-gray-500 max-w-xl mx-auto mb-14">
+      <motion.p
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 3, y: 0 }}
+        viewport={{ once: false }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="text-center text-gray-500 max-w-xl mx-auto mb-14"
+      >
         Discover books organized by genre — find exactly what you are looking
         for.
-      </p>
+      </motion.p>
 
       {/* Slider wrapper */}
       <div className="relative max-w-6xl mx-auto">
         {/* Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {categories.map((cat) => (
-            <div
+          {categories.map((cat, index) => (
+            <motion.div
               key={cat.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 3, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.5, delay: index * 0.15 }}
+              whileHover={{ scale: 1.03 }}
               className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 hover:shadow-md transition"
             >
               <div
@@ -99,10 +122,10 @@ export default function CategorySection() {
                   className="flex items-center gap-1 text-sm font-semibold text-orange-500 hover:text-orange-600 transition"
                   href={`/all-books?categories=${cat.title}`}
                 >
-                    Explore <FiArrowRight size={14} />
+                  Explore <FiArrowRight size={14} />
                 </Link>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
