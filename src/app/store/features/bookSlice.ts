@@ -14,13 +14,11 @@ const initialState: BooksState = {
   error: null,
 };
 
+
 export const fetchBook = createAsyncThunk('fetchBook', async () => {
   const response = await axios.get("https://assigment-project-phi.vercel.app/api/books")
   return response.data as Book[]
 })
-
-
-
 
 
 const bookSlice = createSlice({
